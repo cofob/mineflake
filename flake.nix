@@ -10,7 +10,7 @@
   outputs = { self, nixpkgs, import-cargo, flake-utils }:
     {
       overlays = rec {
-        mineflake = final: prev: mineflakeWithCustomAttrs { };
+        mineflake = final: prev: mineflakeWithCustomAttrs { } final prev;
 
         mineflakeWithCustomAttrs = attrs: final: prev: {
           mineflake = import ./pkgs ({
