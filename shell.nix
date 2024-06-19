@@ -6,8 +6,8 @@ let
   rust-overlay = import (pkgs.fetchFromGitHub {
     owner = "oxalica";
     repo = "rust-overlay";
-    rev = "cbdf3e5bb205ff2ca165fe661fbd6d885cbd0106";
-    sha256 = "sha256-76PGANC2ADf0h7fe0w2nWpfdGN+bemFs2rvW2EdU/ZY=";
+    rev = "69fcfaebbe564d162a85cadeaadd4dec646be4a2";
+    sha256 = "sha256-JHqQyO5XppLpMSKBaYlxbmPHMc4DpwuavKIch9W+hv4=";
   });
   pkgs' = pkgs.extend rust-overlay;
 in
