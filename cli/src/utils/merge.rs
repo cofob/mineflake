@@ -11,7 +11,7 @@ pub fn merge_json(a: &mut serde_json::Value, b: &serde_json::Value) {
 			for (k, v) in b {
 				if v.is_array() && a.contains_key(k) && a.get(k).as_ref().unwrap().is_array() {
 					let mut _a = a.get(k).unwrap().as_array().unwrap().to_owned();
-					_a = v.as_array().unwrap().to_owned();
+					v.as_array().unwrap().clone_into(&mut _a);
 					a[k] = serde_json::Value::from(_a);
 				} else {
 					merge_json(a.entry(k).or_insert(serde_json::Value::Null), v);
