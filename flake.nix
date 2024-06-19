@@ -2,7 +2,7 @@
   description = "Minecraft server in Nix";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     import-cargo.url = github:edolstra/import-cargo;
     flake-utils.url = "github:numtide/flake-utils";
   };
@@ -10,13 +10,7 @@
   outputs = { self, nixpkgs, import-cargo, flake-utils }:
     {
       overlays = rec {
-        mineflake = final: prev: {
-          mineflake = import ./pkgs {
-            pkgs = prev;
-            lib = prev.lib;
-            inherit (import-cargo.builders) importCargo;
-          };
-        };
+        mineflake = final: prev: mineflakeWithCustomAttrs { } final prev;
 
         mineflakeWithCustomAttrs = attrs: final: prev: {
           mineflake = import ./pkgs ({

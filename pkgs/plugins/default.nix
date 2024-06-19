@@ -1,8 +1,5 @@
 { callPackage, ... }:
 
 {
-  advancedban = callPackage ./advancedban { };
-  cleanmotd = callPackage ./cleanmotd { };
-  coreprotect = callPackage ./coreprotect { };
-  discordsrv = callPackage ./discordsrv { };
+  # normal packages here
 } // (callPackage ./shortbin.nix { })

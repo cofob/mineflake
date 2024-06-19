@@ -1,6 +1,5 @@
 { callPackage, ... }:
 
 rec {
-  waterfall_1-19 = callPackage ./waterfall { };
-  waterfall = waterfall_1-19;
+  # normal packages here
 } // (callPackage ./shortbin.nix { })
