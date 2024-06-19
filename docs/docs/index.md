@@ -32,13 +32,13 @@ Mineflake can be used with Nix or without it. To use Mineflake without Nix, you 
 
     ``` bash
     bash <(curl -L https://nixos.org/nix/install) # (1)
-    nix run github:nix-community/mineflake --help # (2)
+    nix run github:nix-community/mineflake -- --help # (2)
     ```
 
     1. This command installs Nix. If you want to install it manually, you can find more information on [Nix website](https://nixos.org/download.html).
 
     2. This doesn't install Mineflake to your system, it just runs it. So if you want to execute
-    `mineflake apply` command, you need to run `nix run github:nix-community/mineflake apply` instead.
+    `mineflake apply` command, you need to run `nix run github:nix-community/mineflake -- apply` instead.
 
     ???+ tip "Faster builds (optional)"
 
