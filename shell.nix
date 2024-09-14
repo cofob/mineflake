@@ -1,6 +1,4 @@
-{ pkgs ? import <nixpkgs> { } }:
-
-let
+{pkgs ? import <nixpkgs> {}}: let
   # We don't want to make new dependencies in flakes, so we use the
   # fetchers from nixpkgs.
   rust-overlay = import (pkgs.fetchFromGitHub {
@@ -11,6 +9,6 @@ let
   });
   pkgs' = pkgs.extend rust-overlay;
 in
-pkgs'.mkShell {
-  nativeBuildInputs = with pkgs'; [ rust-bin.stable.latest.default nixpkgs-fmt ];
-}
+  pkgs.mkShell {
+    nativeBuildInputs = with pkgs; [nixpkgs-fmt pkg-config];
+  }

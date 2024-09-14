@@ -2,28 +2,32 @@
   description = "Minecraft server in Nix";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11";
-    import-cargo.url = github:edolstra/import-cargo;
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    import-cargo.url = "github:edolstra/import-cargo";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, import-cargo, flake-utils }:
+  outputs = {
+    self,
+    nixpkgs,
+    import-cargo,
+    flake-utils,
+  }:
     {
       overlays = rec {
         mineflake = final: prev: {
           mineflake = import ./pkgs {
             pkgs = prev;
-            lib = prev.lib;
             inherit (import-cargo.builders) importCargo;
           };
         };
 
         mineflakeWithCustomAttrs = attrs: final: prev: {
           mineflake = import ./pkgs ({
-            pkgs = prev;
-            lib = prev.lib;
-            inherit (import-cargo.builders) importCargo;
-          } // attrs);
+              pkgs = prev;
+              inherit (import-cargo.builders) importCargo;
+            }
+            // attrs);
         };
 
         default = mineflake;
@@ -52,38 +56,34 @@
         };
         default = docker;
       };
-    } // flake-utils.lib.eachDefaultSystem (system:
-      let
+    }
+    // flake-utils.lib.eachDefaultSystem (
+      system: let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ self.overlays.default ];
+          overlays = [self.overlays.default];
         };
         overlay = (self.overlays.default pkgs pkgs).mineflake;
-      in
-      {
-        devShells.default = import ./shell.nix { inherit pkgs; };
+      in {
+        devShells.default = import ./shell.nix {inherit pkgs;};
 
-        packages =
-          let
-            buildInputs = builtins.filter (p: p ? outPath) (builtins.attrValues overlay);
-            namedInputs =
-              builtins.listToAttrs
-                (builtins.map
-                  (p:
-                    {
-                      name = p;
-                      value = builtins.getAttr p overlay;
-                    })
-                  (builtins.filter
-                    (p: (builtins.getAttr p overlay) ? outPath)
-                    (builtins.attrNames overlay)
-                  )
-                );
-          in
-          (overlay // {
+        packages = let
+          buildInputs = builtins.filter (p: p ? outPath) (builtins.attrValues overlay);
+          namedInputs =
+            builtins.listToAttrs
+            (
+              map
+              (p: {
+                name = p.name;
+                value = p.outPath;
+              })
+              buildInputs
+            );
+        in (overlay
+          // {
             # This is a hack to get the buildInputs of the overlay
             # Used for caching on cachix
-            default = pkgs.stdenv.mkDerivation {
+            default = pkgs.stdenvNoCC.mkDerivation {
               name = "all";
               src = ./.;
               buildInputs = buildInputs;
