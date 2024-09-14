@@ -4,7 +4,7 @@ disable_modern_tab_limiter: true
 log_initial_handler_connections: true
 throttling:
   tab_complete: 1000
-game_version: ""
+game_version: ''
 disable_tab_list_rewrite: true
 registered_plugin_channels_limit: 128
 disable_entity_metadata_rewrite: false

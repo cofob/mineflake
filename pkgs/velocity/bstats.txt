@@ -1,0 +1,5 @@
+enabled=false
+server-uuid=00000000-0000-0000-0000-000000000000
+log-errors=false
+log-sent-data=false
+log-response-status-text=false
